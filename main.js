@@ -1,9 +1,9 @@
 
 //FRESH GAME DATA
 var freshData = {
-    debris: 10000,
+    debris: 0,
     debrisPer: 1,
-    ice: 10000,
+    ice: 0,
     icePer: 1,
     cell: 0,
     cellPer: 0,
@@ -47,32 +47,33 @@ function gatherCell() {
 
 //INCREASE DEBRIS PER
 function performGravityRitual(quantity) {
-
+    //GENERIC COST MULTIPLIER
     const multiplier = 1.1;
-
+    //MAX AMOUNT ABLE TO BE AFFORDED
     let maxAffordable = calculateMaxAffordable(gameData.gravityRitualCost, multiplier, gameData.debris);
+    //GET A QUANTITY FOR AVAILABLE RESOURCE
     quantity = quantity === "max" ? maxAffordable : Math.min(quantity, maxAffordable);
-
+    //COST OF RESOURCES RELATIVE TO QUANTITY ABLE TO BE AFFORDED
     let totalCost = calculateTotalCost(gameData.gravityRitualCost, multiplier, quantity);
-
-    if (gameData.debris >= totalCost) {
-        gameData.debris -= totalCost
-        gameData.debrisPer += quantity
-        gameData.icePer += 0.5*quantity
-        gameData.gravityRitualCost *= Math.pow(multiplier, quantity)
-
-        document.getElementById("debrisGathered").innerHTML = format(gameData.debris, "scientific")
-        document.getElementById("gravityRitualCost").innerHTML = format(gameData.gravityRitualCost, "scientific")
-        document.getElementById("debrisPer").innerHTML = "Gather " + format(gameData.debrisPer, "scientific") + " debris"
-        document.getElementById("debrisPerAMT").innerHTML = format(gameData.debrisPer, "scientific") + "<br>"
-        document.getElementById("icePerAMT").innerHTML = format(gameData.icePer) + "<br>"
-    }
+    //PAY FOR UPGRADE
+    gameData.debris -= totalCost
+    gameData.debrisPer += quantity
+    //APPLY UPGRADE
+    gameData.icePer += 0.75*quantity
+    //MAKE FUTURE UPGRADES MORE EXPENSIVE
+    gameData.gravityRitualCost *= Math.pow(multiplier, quantity);
+    //UPDATE GUI
+    document.getElementById("debrisGathered").innerHTML = format(gameData.debris, "scientific")
+    document.getElementById("gravityRitualCost").innerHTML = format(gameData.gravityRitualCost, "scientific")
+    document.getElementById("debrisPer").innerHTML = "Gather " + format(gameData.debrisPer, "scientific") + " debris"
+    document.getElementById("debrisPerAMT").innerHTML = format(gameData.debrisPer, "scientific") + "<br>"
+    document.getElementById("icePerAMT").innerHTML = format(gameData.icePer) + "<br>"
 }
 
-//increase cell production
+//INCREASE CELL PER
 function performCellCultivation(quantity) {
     //GENERIC COST MULTIPLIER FOR EACH RESOURCE
-    const multiplier = 1.5
+    const multiplier = 1.2
     //FIND MAX AMOUNT ABLE TO BE AFFORDED
     let maxAffordableDebris = calculateMaxAffordable(0.2*gameData.cellCultivationCost, multiplier, gameData.debris)
     let maxAffordableIce = calculateMaxAffordable(0.8*gameData.cellCultivationCost, multiplier, gameData.ice)
@@ -85,30 +86,25 @@ function performCellCultivation(quantity) {
     let totalCostDebris = calculateTotalCost(0.2*gameData.cellCultivationCost, multiplier, quantityLCD)
     let totalCostIce = calculateTotalCost(0.8*gameData.cellCultivationCost, multiplier, quantityLCD)
     //ACTUAL ACTION OF PURCHASE
-    if (gameData.debris >= totalCostDebris) {
-        if (gameData.ice >= totalCostIce){
-            //PAYING FOR UPGRADE
-            gameData.debris -= totalCostDebris
-            gameData.ice -= totalCostIce
-            //APPLYING UPGRADE
-            gameData.cellPer += 0.1*quantityLCD
-            //MAKING FUTURE UPGRADES MORE EXPENSIVE
-            gameData.cellCultivationCost *= Math.pow(multiplier, quantityLCD)
-            //UPDATE GUI
-            document.getElementById("debrisGathered").innerHTML = format(gameData.debris, "scientific")
-            document.getElementById("iceGathered").innerHTML = format(gameData.ice, "scientific")
-            document.getElementById("cellPerAMT").innerHTML = format(gameData.cellPer, "scientific") + "<br>"
-            document.getElementById("cellCultivationCost_Debris").innerHTML = format(0.2*gameData.cellCultivationCost, "scientific")
-            document.getElementById("cellCultivationCost_Ice").innerHTML = format(0.8*gameData.cellCultivationCost, "scientific")
-            //SHOWS CELLS AND REVEALS INFO
-            if(gameData.cellSeen == 0) {
-                document.getElementById("cellLabel").style.display="inline-block"
-                document.getElementById("cellGathered").style.display="inline-block"
-                document.getElementById("cellPerAMT").style.display="inline-block"
-                gameData.cellSeen = 1
-            }
-
-        }
+    //PAYING FOR UPGRADE
+    gameData.debris -= totalCostDebris
+    gameData.ice -= totalCostIce
+    //APPLYING UPGRADE
+    gameData.cellPer += 0.1*quantityLCD
+    //MAKING FUTURE UPGRADES MORE EXPENSIVE
+    gameData.cellCultivationCost *= Math.pow(multiplier, quantityLCD)
+    //UPDATE GUI
+    document.getElementById("debrisGathered").innerHTML = format(gameData.debris, "scientific")
+    document.getElementById("iceGathered").innerHTML = format(gameData.ice, "scientific")
+    document.getElementById("cellPerAMT").innerHTML = format(gameData.cellPer, "scientific") + "<br>"
+    document.getElementById("cellCultivationCost_Debris").innerHTML = format(0.2*gameData.cellCultivationCost, "scientific")
+    document.getElementById("cellCultivationCost_Ice").innerHTML = format(0.8*gameData.cellCultivationCost, "scientific")
+    //SHOWS CELLS AND REVEALS INFO but NOT
+    if(gameData.cellSeen == 0 && !(totalCostDebris == 0 || totalCostIce == 0)) {
+        document.getElementById("cellLabel").style.display="inline-block"
+        document.getElementById("cellGathered").style.display="inline-block"
+        document.getElementById("cellPerAMT").style.display="inline-block"
+        gameData.cellSeen = 1
     }
 }
 //PURCHASE MULTIPLIER
@@ -179,7 +175,7 @@ if (savegame !== null) {
 document.getElementById("debrisGathered").innerHTML = format(gameData.debris, "scientific")
 document.getElementById("debrisPer").innerHTML = "Gather " + format(gameData.debrisPer, "scientific") + " debris"
 document.getElementById("debrisPerAMT").innerHTML = format(gameData.debrisPer, "scientific") + "<br>"
-document.getElementById("gravityRitualCost").innerHTML = "Debris cost: " + format(gameData.gravityRitualCost, "scientific")
+document.getElementById("gravityRitualCost").innerHTML = format(gameData.gravityRitualCost, "scientific")
 document.getElementById("iceGathered").innerHTML = format(gameData.ice, "scientific")
 document.getElementById("icePerAMT").innerHTML = format(gameData.icePer, "scientific") + "<br>"
 document.getElementById("cellCultivationCost_Debris").innerHTML = format(0.2*gameData.cellCultivationCost, "scientific")
