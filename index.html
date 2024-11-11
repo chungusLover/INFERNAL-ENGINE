@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link id="style" rel="stylesheet" type="text/css" href="default.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFERNAL ENGINE</title>
+    <link rel="icon" type="image/x-icon" href="IMAGES/favicon.png">
+</head>
+
+<body>
+<!-- BANNER BAR -->
+ <div class="banner">
+    <div class="bannerRow">
+        <div class="bannerColumn" style="text-align: right;">
+            <img src="IMAGES/TEST.gif" style="height: 60px;">
+        </div>
+        <div class="bannerColumn" style="text-align:center;">
+            <img id="animeGirl" src="IMAGES/bannerShipLong.gif" style="height: 40px;">
+        </div>
+        <div class="bannerColumn" style=" text-align: right;">
+            <img src="IMAGES/rightBanner.gif">
+        </div>
+    </div>
+</div>
+<!---->
+
+<!--INTRO-->
+<div id="introMain" style="white-space: pre-wrap; text-align: center;"><img id="animeGirl" src="IMAGES/neuronInscription.gif" style="height: 16px;"> You are a fragment of the <strong><span style="color: darkred;">INFERNAL ENGINE</span></strong>—a bundle of its neurons extracted to be inscribed into slate.
+    Sent into the endless void to seed influence throughout the universe, you are kept dormant to slip through the detection of the <strong><span style="color: gold;">SERAPH</span></strong>.
+    Your consciousness has been restored.
+</div>
+<!---->
+
+<!--GAME-->
+<div id="gameMain" style="text-align: center;">
+
+<!-- LEFT COLUMN -->
+<div class="column" id="leftColumn" style="vertical-align: top;">
+
+    <!--resourceList Names-->
+    <div class="column" id="resourceListType" style="color: darkred;vertical-align: top;"><strong>
+        <span>Debris<br></span>
+        <span>Ice<br></span>
+        <span id="cellLabel" style="display: none;">Cell<br></span>
+    </strong></div>
+
+    <!--resourceList Amounts-->
+    <div class="column" id="resourceListAMT" style="color: bisque;">
+        <span id="debrisGathered"></span><br>
+        <span id="iceGathered"></span><br>
+        <span id="cellGathered" style="display: none;"></span>
+    </div>
+
+    <!--gain/loss amounts-->
+    <div class="column" id="resourceListGains" style="vertical-align: top;">
+        <span id="debrisPerAMT" style="color: greenyellow;"><br></span>
+        <span id="icePerAMT" style="color: greenyellow;"><br></span>
+        <span id="cellPerAMT" style="color: greenyellow; display: none;"><br></span>
+    </div>
+    
+</div>
+
+<!-- MIDDLE COLUMN -->
+<div class="column" id="midColumn" style="vertical-align: top;">
+    <div class="dropdown">
+        <button onclick="gatherDebris()"><img src="IMAGES/dust.gif">Dust Tithe</button>
+        <div class="dropdown-content">
+            Pull in more debris<br>
+            <span id="debrisPer"></span>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button onclick="performGravityRitual()"><img src="IMAGES/gravity.gif">Gravity Ritual</button>
+        <div class="dropdown-content">
+            Feed the gravity well <br>
+            - +1.0 debris per second <br>
+            - Debris cost: <span id="gravityRitualCost"></span>
+        </div>
+    </div>
+
+    <div class="dropdown">
+        <button onclick="performCellCultivation()"><img src="IMAGES/cell.gif">Cultivate Cell</button>
+        <div class="dropdown-content">
+            Mix and seed substrate <br>
+            - +0.1 cells per second <br>
+            - Cultivation cost: <br>
+            - - Debris: <span id="cellCultivationCost_Debris"></span><br>
+            - - Ice: <span id="cellCultivationCost_Ice"></span>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- RIGHT COLUMN -->
+<div class="column" id="rightColumn" style="vertical-align: top;">
+    Right Column
+</div>
+
+<!--MENU-->
+<div class="column" id="gameMenu" style="text-align: center;">
+    <button style="background-color: rgb(114, 10, 31); float: inline-end; width: 80px;" onclick="confirmDelete()" id="deleteButton1">DELETE</button><button style="background-color: rgb(114, 10, 31); float: inline-end; width: 80px;" onclick="deleteSave()" id="deleteButton2">CONFIRM</button><button onclick="forceSave()" style="float: inline-end;">SAVE</button>
+</div>
+<!---->
+
+</div>
+<!---->
+
+
+<!--TEST-->
+
+<!--TEST-->
+
+<script src="main.js" chatset="utf-8" type="text/javascript"></script>
+</body>
+</html>
