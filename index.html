@@ -38,7 +38,7 @@
 
 <!-- LEFT COLUMN -->
 <div class="column" id="leftColumn" style="vertical-align: top;">
-
+    <div style="margin: 0;padding: 0; height: 26px;border-bottom: 1px solid rgb(147, 147, 147);text-align: center; background-color: rgb(12, 12, 12);"><div style="display: inline-block; padding: 3px;margin: 0px;">Resources</div></div>
     <!--resourceList Names-->
     <div class="column" id="resourceListType" style="color: darkred;vertical-align: top;"><strong>
         <span>Debris<br></span>
@@ -59,31 +59,41 @@
         <span id="icePerAMT" style="color: greenyellow;"><br></span>
         <span id="cellPerAMT" style="color: greenyellow; display: none;"><br></span>
     </div>
-    
 </div>
 
 <!-- MIDDLE COLUMN -->
 <div class="column" id="midColumn" style="vertical-align: top;">
+
+    <!--PURCHASE AMOUNT MULTIPLIERS-->
+    <div style="margin: 0;padding: 0; height: 26px;border-bottom: 1px solid rgb(147, 147, 147);text-align: center;background-color: rgb(12, 12, 12);"> <div style="display: inline-block; padding: 3px;margin: 0px;">Actions</div>
+    <div class="checkBox">
+        <!--ONE X-->
+        <input type="radio" id="1xPurchase" name="purchaseAmount" value="oneX" checked />
+        <label>1x</label>
+        <!--FIVE x-->    
+        <input type="radio" id="5xPurchase" name="purchaseAmount" value="fiveX" />
+        <label>5x</label>
+        <!--MAX--> 
+        <input type="radio" id="maxPurchase" name="purchaseAmount" value="maxX" />
+        <label>Max</label>
+    </div></div>
+    <!---->
     <div class="dropdown">
         <button onclick="gatherDebris()"><img src="IMAGES/dust.gif">Dust Tithe</button>
         <div class="dropdown-content">
             Pull in more debris<br>
             <span id="debrisPer"></span>
         </div>
-    </div>
-
-    <div class="dropdown">
-        <button onclick="performGravityRitual()"><img src="IMAGES/gravity.gif">Gravity Ritual</button>
+  </div><div class="dropdown">
+        <button onclick="performGravityRitual(purchaseAMT)"><img src="IMAGES/gravity.gif">Gravity Ritual</button>
         <div class="dropdown-content">
             Feed the gravity well <br>
             - +1.0 debris per second <br>
             - +0.5 ice per second <br>
             - Debris cost: <span id="gravityRitualCost"></span>
         </div>
-    </div>
-
-    <div class="dropdown">
-        <button onclick="performCellCultivation()"><img src="IMAGES/cell.gif">Cultivate Cell</button>
+  </div><div class="dropdown">
+        <button onclick="performCellCultivation(purchaseAMT)"><img src="IMAGES/cell.gif">Cultivate Cell</button>
         <div class="dropdown-content">
             Mix and seed substrate <br>
             - +0.1 cells per second <br>
@@ -92,13 +102,12 @@
             - - Ice: <span id="cellCultivationCost_Ice"></span>
         </div>
     </div>
-
 </div>
 
 
 <!-- RIGHT COLUMN -->
 <div class="column" id="rightColumn" style="vertical-align: top;">
-    Right Column
+    <span id="results"></span>
 </div>
 
 <!--MENU-->

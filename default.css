@@ -22,7 +22,8 @@ button {
     padding: 1px 3px 0px 3px;
     text-align: center;
     display: inline-block;
-    margin: 2px;
+    margin: 5px;
+    margin-bottom: 2px;
     cursor: pointer;
     font-size: 16px;
     
@@ -30,7 +31,8 @@ button {
 }
 button:hover{
     background-color: rgb(37, 37, 37);
-    margin: 2px;
+    margin: 5px;
+    margin-bottom: 2px;
     padding: 1px 3px 0px 3px;
 
 }
@@ -112,24 +114,37 @@ title:hover:after {
 .dropdown:hover .dropdown-content{
     display: inline-block;
 }
+.checkBox{
+
+    text-align: center;  
+    border-left: 1px solid rgb(143, 143, 143);
+    width: 180px;
+    padding: 3px;
+    margin: 0;
+    float: inline-end;
+}
 
 #leftColumn {
     width: 30%;
     max-width: 400px;
     min-width: 370px;
     padding-left: 0px;
-    padding-right: 5px;
+    padding-right: 0px;
     overflow-y: auto;
     overflow-x: hidden;
     text-align: left;
+    padding-top: 0;
 }
+
 #midColumn {
     width: 30%;
-    max-width: 500px;
-    min-width: 370px;
-    padding-left: 5px;
-    padding-right: 5px;
+    max-width: 700px;
+    min-width: 600px;
+    padding-left: 0px;
+    padding-right: 0px;
     text-align: left;
+    padding-top: 0;
+
 }
 #rightColumn {
     width: 30%;

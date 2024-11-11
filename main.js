@@ -1,9 +1,9 @@
 
 //FRESH GAME DATA
 var freshData = {
-    debris: 27.3,
+    debris: 10000,
     debrisPer: 1,
-    ice:12.8,
+    ice: 10000,
     icePer: 1,
     cell: 0,
     cellPer: 0,
@@ -15,6 +15,8 @@ var freshData = {
 
 //GAME DATA(PROFILE)
 var gameData = freshData
+//Current purchase amount
+var purchaseAMT = 1
 
 //FORMATTING
 function format(number, type) {
@@ -43,13 +45,22 @@ function gatherCell() {
     document.getElementById("cellGathered").innerHTML = format(gameData.cell, "scientific")
 }
 
-//INCREASE GOLD PER CLICK
-function performGravityRitual() {
-    if (gameData.debris >= gameData.gravityRitualCost) {
-        gameData.debris -= gameData.gravityRitualCost
-        gameData.debrisPer += 1
-        gameData.icePer += 0.5
-        gameData.gravityRitualCost *= 1.1
+//INCREASE DEBRIS PER
+function performGravityRitual(quantity) {
+
+    const multiplier = 1.1;
+
+    let maxAffordable = calculateMaxAffordable(gameData.gravityRitualCost, multiplier, gameData.debris);
+    quantity = quantity === "max" ? maxAffordable : Math.min(quantity, maxAffordable);
+
+    let totalCost = calculateTotalCost(gameData.gravityRitualCost, multiplier, quantity);
+
+    if (gameData.debris >= totalCost) {
+        gameData.debris -= totalCost
+        gameData.debrisPer += quantity
+        gameData.icePer += 0.5*quantity
+        gameData.gravityRitualCost *= Math.pow(multiplier, quantity)
+
         document.getElementById("debrisGathered").innerHTML = format(gameData.debris, "scientific")
         document.getElementById("gravityRitualCost").innerHTML = format(gameData.gravityRitualCost, "scientific")
         document.getElementById("debrisPer").innerHTML = "Gather " + format(gameData.debrisPer, "scientific") + " debris"
@@ -59,19 +70,37 @@ function performGravityRitual() {
 }
 
 //increase cell production
-function performCellCultivation() {
-    if (gameData.debris >= (0.2*gameData.cellCultivationCost)) {
-        if (gameData.ice >= (0.8*gameData.cellCultivationCost)){
-            gameData.debris -= 0.2*gameData.cellCultivationCost
-            gameData.ice -= 0.8*gameData.cellCultivationCost
-            gameData.cellPer += 0.1
-            gameData.cellCultivationCost *= 1.5
+function performCellCultivation(quantity) {
+    //GENERIC COST MULTIPLIER FOR EACH RESOURCE
+    const multiplier = 1.5
+    //FIND MAX AMOUNT ABLE TO BE AFFORDED
+    let maxAffordableDebris = calculateMaxAffordable(0.2*gameData.cellCultivationCost, multiplier, gameData.debris)
+    let maxAffordableIce = calculateMaxAffordable(0.8*gameData.cellCultivationCost, multiplier, gameData.ice)
+    //GET A QUANTITY FOR EACH  RESOURCE INDIVIDUALLY
+    quantityDebris = quantity === "max" ? maxAffordableDebris : Math.min(quantity, maxAffordableDebris)
+    quantityIce = quantity === "max" ? maxAffordableIce : Math.min(quantity, maxAffordableIce)
+    //FIND THE SMALLEST DENOMINATOR
+    let quantityLCD = Math.min(quantityDebris, quantityIce)
+    //SET EACH COST WITH RESPECT TO THE SMALLEST
+    let totalCostDebris = calculateTotalCost(0.2*gameData.cellCultivationCost, multiplier, quantityLCD)
+    let totalCostIce = calculateTotalCost(0.8*gameData.cellCultivationCost, multiplier, quantityLCD)
+    //ACTUAL ACTION OF PURCHASE
+    if (gameData.debris >= totalCostDebris) {
+        if (gameData.ice >= totalCostIce){
+            //PAYING FOR UPGRADE
+            gameData.debris -= totalCostDebris
+            gameData.ice -= totalCostIce
+            //APPLYING UPGRADE
+            gameData.cellPer += 0.1*quantityLCD
+            //MAKING FUTURE UPGRADES MORE EXPENSIVE
+            gameData.cellCultivationCost *= Math.pow(multiplier, quantityLCD)
+            //UPDATE GUI
             document.getElementById("debrisGathered").innerHTML = format(gameData.debris, "scientific")
             document.getElementById("iceGathered").innerHTML = format(gameData.ice, "scientific")
             document.getElementById("cellPerAMT").innerHTML = format(gameData.cellPer, "scientific") + "<br>"
             document.getElementById("cellCultivationCost_Debris").innerHTML = format(0.2*gameData.cellCultivationCost, "scientific")
             document.getElementById("cellCultivationCost_Ice").innerHTML = format(0.8*gameData.cellCultivationCost, "scientific")
-            //SHOWS CELLS
+            //SHOWS CELLS AND REVEALS INFO
             if(gameData.cellSeen == 0) {
                 document.getElementById("cellLabel").style.display="inline-block"
                 document.getElementById("cellGathered").style.display="inline-block"
@@ -81,6 +110,42 @@ function performCellCultivation() {
 
         }
     }
+}
+//PURCHASE MULTIPLIER
+document.querySelector("div.checkBox").addEventListener("click", function(evt){
+    if(evt.target.type === "radio"){
+        if (evt.target.value == "oneX"){
+            purchaseAMT = 1
+        } 
+        if (evt.target.value == "fiveX") {
+            purchaseAMT = 5
+        }
+        if (evt.target.value == "maxX") {
+            purchaseAMT = "max"
+        }
+        document.getElementById("results").innerHTML = purchaseAMT;
+    }
+})
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector("input[name='purchaseAmount'][value='oneX']").checked = true;
+});
+//CALC TOTAL COST
+function calculateTotalCost(baseCost, multiplier, quantity) {
+    return baseCost * ((Math.pow(multiplier, quantity) - 1) / (multiplier - 1));
+}
+//CALC MAX AFFORDABLE
+function calculateMaxAffordable(baseCost, multiplier, currentResources) {
+    let quantity = 0;
+    let totalCost = 0;
+
+    while (true) {
+        let nextCost = calculateTotalCost(baseCost, multiplier, quantity + 1) - totalCost;
+        if (totalCost + nextCost > currentResources) break;
+
+        quantity++;
+        totalCost += nextCost;
+    }
+    return quantity;
 }
 
 //DELETE CONF
@@ -117,15 +182,14 @@ document.getElementById("debrisPerAMT").innerHTML = format(gameData.debrisPer, "
 document.getElementById("gravityRitualCost").innerHTML = "Debris cost: " + format(gameData.gravityRitualCost, "scientific")
 document.getElementById("iceGathered").innerHTML = format(gameData.ice, "scientific")
 document.getElementById("icePerAMT").innerHTML = format(gameData.icePer, "scientific") + "<br>"
-document.getElementById("cellCultivationCost_Debris").innerHTML = 0.2*format(gameData.cellCultivationCost, "scientific")
-document.getElementById("cellCultivationCost_Ice").innerHTML = 0.8*format(gameData.cellCultivationCost, "scientific")
+document.getElementById("cellCultivationCost_Debris").innerHTML = format(0.2*gameData.cellCultivationCost, "scientific")
+document.getElementById("cellCultivationCost_Ice").innerHTML = format(0.8*gameData.cellCultivationCost, "scientific")
 if(gameData.cellSeen == 1) {
-    document.getElementById("cellLabel").style.display= "inline-block"
-    document.getElementById("cellGathered").style.display= "inline-block"
+    document.getElementById("cellLabel").style.display= "inline"
+    document.getElementById("cellGathered").style.display= "inline"
     document.getElementById("cellGathered").innerHTML= format(gameData.cell, "scientific")
-    document.getElementById("cellPerAMT").style.display= "inline-block"
+    document.getElementById("cellPerAMT").style.display= "inline"
     document.getElementById("cellPerAMT").innerHTML= format(gameData.cellPer, "scientific")
-
 }
 
 
