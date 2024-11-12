@@ -17,7 +17,7 @@
             <img src="IMAGES/TEST.gif" style="height: 60px;">
         </div>
         <div class="bannerColumn" style="text-align:center;">
-            <img id="animeGirl" src="IMAGES/bannerShipLong.gif" style="height: 40px;">
+            <img id="animeGirl" src="IMAGES/capsuleWIP2.gif" height="96px">
         </div>
         <div class="bannerColumn" style=" text-align: right;">
             <img src="IMAGES/rightBanner.gif">
@@ -38,7 +38,7 @@
 
 <!-- LEFT COLUMN -->
 <div class="column" id="leftColumn" style="vertical-align: top;">
-    <div style="margin: 0;padding: 0; height: 26px;border-bottom: 1px solid rgb(147, 147, 147);text-align: center; background-color: rgb(12, 12, 12);"><div style="display: inline-block; padding: 3px;margin: 0px;">Resources</div></div>
+    <div class="columnHead"><div style="display: inline-block; padding: 3px;margin: 0px;">Resources</div></div>
     <!--resourceList Names-->
     <div class="column" id="resourceListType" style="color: darkred;vertical-align: top;"><strong>
         <span>Debris<br></span>
@@ -65,7 +65,7 @@
 <div class="column" id="midColumn" style="vertical-align: top;">
 
     <!--PURCHASE AMOUNT MULTIPLIERS-->
-    <div style="margin: 0;padding: 0; height: 26px;border-bottom: 1px solid rgb(147, 147, 147);text-align: center;background-color: rgb(12, 12, 12);"> <div style="display: inline-block; padding: 3px;margin: 0px;">Actions</div>
+    <div class="columnHead" style="border-top-left-radius: inherit; border-top-right-radius: inherit;"> <div style="display: inline-block; padding: 3px;margin: 0px;">Actions</div>
     <div class="checkBox">
         <!--ONE X-->
         <input type="radio" id="1xPurchase" name="purchaseAmount" value="oneX" checked />
@@ -84,7 +84,7 @@
             Pull in more debris<br>
             <span id="debrisPer"></span>
         </div>
-  </div><div class="dropdown">
+    </div><div class="dropdown">
         <button onclick="performGravityRitual(purchaseAMT)"><img src="IMAGES/gravity.gif">Gravity Ritual</button>
         <div class="dropdown-content">
             Feed the gravity well <br>
@@ -92,7 +92,7 @@
             - +0.75 ice per second <br>
             - Debris cost: <span id="gravityRitualCost"></span>
         </div>
-  </div><div class="dropdown">
+    </div><div class="dropdown">
         <button onclick="performCellCultivation(purchaseAMT)"><img src="IMAGES/cell.gif">Cultivate Cell</button>
         <div class="dropdown-content">
             Mix and seed substrate <br>
@@ -107,12 +107,14 @@
 
 <!-- RIGHT COLUMN -->
 <div class="column" id="rightColumn" style="vertical-align: top;">
-    <span id="results"></span>
+    <div class="columnHead" style="border-top-left-radius: inherit; border-top-right-radius: inherit;"> <div style="display: inline-block; padding: 3px;margin: 0px;">UNUSED</div></div>
+    <span id="results"></span><br>
+    test
 </div>
 
 <!--MENU-->
 <div class="column" id="gameMenu" style="text-align: center;">
-    <button style="background-color: rgb(114, 10, 31); float: inline-end; width: 80px;" onclick="confirmDelete()" id="deleteButton1">DELETE</button><button style="background-color: rgb(114, 10, 31); float: inline-end; width: 80px;" onclick="deleteSave()" id="deleteButton2">CONFIRM</button><button onclick="forceSave()" style="float: inline-end;">SAVE</button>
+    <button style="background-color: rgb(114, 10, 31); float: inline-end; width: 80px;" onclick="confirmDelete()" id="deleteButton1">DELETE</button><button style="background-color: rgb(114, 10, 31); float: inline-end; width: 80px;" onclick="deleteSave()" id="deleteButton2">CONFIRM</button><button onclick="forceSave()" style="float: left;">SAVE</button>
 </div>
 <!---->
 
